@@ -1,32 +1,27 @@
-// ConsoleApplication3.cpp : 定义控制台应用程序的入口点。
+// ConsoleApplication1.cpp : 定义控制台应用程序的入口点。
 //
 
 #include "stdafx.h"
-#include "stdio.h"
 #include "stdlib.h"
 
 
 int main()
 {
-
 	FILE *fp;
-	char ch;
-	fp = fopen("d://GPX//export.gpx", "r");
-	if (fp == NULL)
+	int flen = 0;
+	char *str;
+	if ((fp = fopen("d://GPX//export.gpx", "r")) == 0)
 	{
-		printf("File open error!");
-		
+		printf("打开文件失败！！\n");
+		return -1;
 	}
-	else
-	{
-		ch = fgetc(fp);
-		while (ch != EOF)
-		{
-			printf("%c", ch);
-			ch = fgetc(fp);
-		}
-		fclose(fp);
-	}
+	fseek(fp, 0, SEEK_END);
+	flen = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	str = (char *)malloc(1 * flen);
+	fread(str, 1, flen, fp);
+	printf("len=%d  %c\n", flen, str[0]);
+	fclose(fp);
 	system("pause");
     return 0;
 }
