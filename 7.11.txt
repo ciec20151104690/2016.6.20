@@ -1,0 +1,23 @@
+#include "stdafx.h"
+
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	FILE *fp;
+	char str[80];
+	fp=fopen("d\\GPX\\export.gpx");
+	if(fp==NULL);
+{
+	printf("Error!");
+	exit(-1);
+}
+else
+{
+	while(fegets(str,20,fp)!=NULL)
+	{
+		printf("&s",str);
+	}
+	fclose(fp);
+}
+	return 0;
+}
