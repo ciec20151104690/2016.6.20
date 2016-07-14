@@ -1,0 +1,59 @@
+
+// ConsoleApplication2.cpp : 定义控制台应用程序的入口点。
+//
+
+#include "stdafx.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
+
+int main()
+{
+	FILE *fp,*fp1;
+	char lat[9];
+	char lon[10];
+	char time[20];
+	char *a;
+	int len;
+	if ((fp = fopen("d:\\GPX\\export.gpx", "r")) == 0)
+	{
+		printf("Error!\n");
+		system("pause");
+		return (-1);
+	}
+	else
+	{
+		fp1 = fopen("d:\\GPX\\export.csv", "w");
+		fseek(fp, 0, SEEK_END);
+		len = ftell(fp);
+		a = (char *)malloc(len);
+		fseek(fp, 0, SEEK_SET);
+		fread(a, 1, len, fp);
+		char s[50];
+		int i = 0;
+		while (!((*(a + i) == '<') && (*(a + i + 1) == '/') && (*(a + i + 2) == 'g') && (*(a + i + 3) == 'p')))
+		{
+			if (((*(a + i) == ' ') && (*(a + i + 1) == 'l') && (*(a + i + 2) == 'a')))
+			{
+				strncpy(lat, a + i + 11, 9);
+				strncpy(lon, a + i + 27, 10);
+				strncpy(time, a + i + 5, 20);
+				lat[9] = '\0';
+				lon[10] = '\0';
+				time[20] = '\0';
+				printf("lat=%s\t", lat);
+				printf("lon=%s\t", lon);
+				printf("time=%s\n", time);
+			}
+			i++;
+		}
+		fprintf(fp1, "lat, lon, time");
+		system("pause");
+	
+		fclose(fp);
+		fclose(fp1);
+		free(fp);
+		}
+
+		return 0;
+}
